@@ -2,8 +2,7 @@ object Payu{
 
 //payu Integration
   def getPaymentHash(Key : String , Amount : String , ProdutInfo : String , FirstName : String , Email : String) : String = {    
-	import java.util._	
-	import java.security._ 	  
+	import java.util._		 	  
 	val salt="3sf0jURk" //salt value store	  
 	var hashString = ""  //define hashstring
 	var hash="" //define hash  
@@ -50,9 +49,8 @@ object Payu{
   
   //get texnId
   def texnId : String = {
-		import java.util._
-		import java.security._    
-        val rand = new Random()
+		import java.util._	
+		val rand = new Random()
 		val rndm = Integer.toString(rand.nextInt())+(System.currentTimeMillis() / 1000L)
 		val txnid=hashCal("SHA-256",rndm).substring(0,20)
 		return txnid    
