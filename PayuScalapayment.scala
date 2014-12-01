@@ -7,26 +7,33 @@ object Payu{
 	var hashString = ""  //define hashstring
 	var hash="" //define hash  
 	//get txnid  
-	val  TxnId =   texnId	  
+	val  TxnId =   texnId	
+	println(TxnId)
 	//create hashMap
 	val params  =  new HashMap[String, String]	
 	//required field
 	params put("key", Key) //store key value
-	params put("txnid", TxnId) //store txnid
+	params put("txnid", "12345") //store txnid
 	params put("amount", Amount) //store amount
 	params put("productinfo", ProdutInfo) //store
 	params put("firstname", FirstName) //store firstname
-	params put("email", Email)	// store email
+	params put("email", Email)	// store email	
 	///define hashsquen key  
-	val hashSequence = "key|txnid|amount|productinfo|firstname|email"	  
+	val hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10"  
 	var   hashVarSeq : Array[String]  = Array()	
 	hashVarSeq = hashSequence.split("\\|")	
-	for(part :String <- hashVarSeq){	
-	 hashString= (hashString.concat(params.get(part)))	
-	 hashString=hashString.concat("|")	
+	for(part :String <- hashVarSeq){
+	  println(params.get(part))
+	  if(params.get(part) == null){
+	    hashString.concat("")
+	    hashString=hashString.concat("|")
+	  }else{
+	    hashString= (hashString.concat(params.get(part)))	
+	   	hashString=hashString.concat("|")
+	  }	 	
 	}
 	//add stirng
-	hashString=hashString.concat(salt)
+	hashString=hashString.concat(salt)	
 	//genrate hash
 	hash=hashCal("SHA-512",hashString)
 	
@@ -34,7 +41,7 @@ object Payu{
   }
   
   
-  //get action url
+  //get action ur
   def ActionUrl : String = {    
     val base_url="https://test.payu.in"
     val actionurl = base_url.concat("/_payment")
@@ -68,20 +75,20 @@ object Payu{
 		algorithm.reset()
 		algorithm.update(hashseq)
 		var messageDigest : Array[Byte] = Array()
-		messageDigest = algorithm.digest()	
-		for( p : Int  <- 0 to messageDigest.length){	
+		messageDigest = algorithm.digest()		
+		for( p : Int  <- 0 until  messageDigest.length){	
 		    var payu = messageDigest(p)
-			val hex=Integer.toHexString(0xFF & payu)
+			val hex=Integer.toHexString(0xFF & payu)			
 			if(hex.length()==1) hexString.append("0")
 			hexString.append(hex)
-		}
-			
+		}	
 	}catch{ 
-		  case ex: NoSuchAlgorithmException => println("Exception") 
+		  case ex: NoSuchAlgorithmException => println("Exception")   
+		  
 		  }
 		
+		 return hexString.toString()
 		
-		return hexString.toString()
 	}
 }
 	
